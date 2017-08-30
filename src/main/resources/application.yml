@@ -1,0 +1,13 @@
+logging:
+  level:
+    org.springframework.web: DEBUG
+spring:
+  datasource:
+    schema: classpath:import.sql
+    url: jdbc:mysql://localhost:3306/childhood?useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+mybatis:
+    type-aliases-package: com.dazui.childhood.user.domin
+    config-location: classpath:mybatis.xml
