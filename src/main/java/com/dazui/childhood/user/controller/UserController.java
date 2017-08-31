@@ -2,6 +2,8 @@ package com.dazui.childhood.user.controller;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,18 +22,23 @@ import com.dazui.childhood.user.service.UserService;
 public class UserController {
 	
 	public final static String SESSION_KEY = "user";
+	
+	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public Object register(@RequestBody User user) {
+	public Object register(@RequestBody User user, HttpSession session) {
+		logger.info("[truyayong] register");
+		JSONObject jsonObject = new JSONObject();
 		if(userService.findByName(user.getName()) != null) {
-			JSONObject jsonObject = new JSONObject();
 			jsonObject.put("message", "用户名已被使用");
 			return jsonObject;
 		}
-		return userService.add(user);
+		userService.add(user);
+		jsonObject.put("message", "success");
+		return jsonObject;
 	}
 	
 	@PostMapping("/login")
