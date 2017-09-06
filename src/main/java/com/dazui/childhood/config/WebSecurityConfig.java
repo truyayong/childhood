@@ -24,8 +24,10 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 		interceptorRegistration.excludePathPatterns("/error");
 		interceptorRegistration.excludePathPatterns("/login**");
 		interceptorRegistration.excludePathPatterns("/register**");
+		interceptorRegistration.excludePathPatterns("/getStsToken**");
+		interceptorRegistration.excludePathPatterns("/callback**");
 		//拦截配置
-		interceptorRegistration.addPathPatterns("/**");
+		//interceptorRegistration.addPathPatterns("/**");
 	}
 	
 	@Bean

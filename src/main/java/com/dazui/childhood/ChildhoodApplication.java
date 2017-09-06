@@ -15,6 +15,6 @@ public class ChildhoodApplication implements EmbeddedServletContainerCustomizer{
 	
 	@Override
 	public void customize(ConfigurableEmbeddedServletContainer container) {
-		container.setPort(8011);
+		container.setPort(80);
 	}
 }
