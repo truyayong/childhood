@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.dazui.childhood.alioss.service.AliOssTokenService;
 import com.dazui.childhood.user.controller.UserController;
 
@@ -51,7 +52,12 @@ public class AliOssController {
 		String key = json.getString("object");
 		JSONObject jsonobject = new JSONObject();
 		OSSClient client = new OSSClient(endpoint, maccessKeyId, maccessKeySecret);
+		//过期时间为10年
+		Date expires = new Date (new Date().getTime() + 3600l * 1000 * 24 * 365 * 10); 
+		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucket, key);
+		String url1 = client.generatePresignedUrl(request).toString();
 		jsonobject.put("tru", "111");
+		jsonobject.put("url1", url1);
 		return jsonobject;
 		
 	}
