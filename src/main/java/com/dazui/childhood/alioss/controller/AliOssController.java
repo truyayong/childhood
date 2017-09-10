@@ -28,11 +28,6 @@ public class AliOssController {
 	private Logger logger = LoggerFactory.getLogger(AliOssController.class);
 	@Autowired
 	private AliOssTokenService tokenAervice;
-	
-	private OSSClient ossClient;
-    private static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
-    public String maccessKeyId = "LTAIgLoRZvwb2rqy";
-    public String maccessKeySecret = "EAyBXptPSkq4FVjtEPXcNtFkHSH1SR";
 
 	@GetMapping("/getStsToken")
 	public void getStsToken(HttpServletRequest request, HttpServletResponse response) {
@@ -46,19 +41,14 @@ public class AliOssController {
 	}
 	//,HttpServletRequest request, HttpServletResponse response
 	@PostMapping("/callback")
-	public Object getCallBack(@RequestBody JSONObject json) {
-		logger.info("[truyayong] callback filename : " + json.toString());
-		String bucket = json.getString("bucket");
-		String key = json.getString("object");
-		JSONObject jsonobject = new JSONObject();
-		OSSClient client = new OSSClient(endpoint, maccessKeyId, maccessKeySecret);
-		//过期时间为10年
-		Date expires = new Date (new Date().getTime() + 3600l * 1000 * 24 * 365 * 10); 
-		GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucket, key);
-		String url1 = client.generatePresignedUrl(request).toString();
-		jsonobject.put("tru", "111");
-		jsonobject.put("url1", url1);
-		return jsonobject;
+	public Object getCallBack(@RequestBody JSONObject requestBody) {
+		logger.info("[truyayong] callback filename : " + requestBody.toString());
+		String bucket = requestBody.getString("bucket");
+		String object = requestBody.getString("object");
+		JSONObject responseBody = new JSONObject();
+		String fileUrl = tokenAervice.getUrl(bucket, object);
+		responseBody.put("fileUrl", fileUrl);
+		return responseBody;
 		
 	}
 }

@@ -38,10 +38,12 @@ public class AliOssTokenService {
     // 目前只有"cn-hangzhou"这个region可用, 不要使用填写其他region的值
     public static final String REGION_CN_HANGZHOU = "cn-hangzhou";
     public static final String STS_API_VERSION = "2015-04-01";
-    private Logger logger = LoggerFactory.getLogger(AliOssTokenService.class);
+    private static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+    private static final String gAccessKeyId = "LTAIgLoRZvwb2rqy";
+    private static final String gAccessKeySecret = "EAyBXptPSkq4FVjtEPXcNtFkHSH1SR";
+    private static final OSSClient ossClient = new OSSClient(endpoint, gAccessKeyId, gAccessKeySecret);
     
-    public String maccessKeyId;
-    public String maccessKeySecret;
+    private Logger logger = LoggerFactory.getLogger(AliOssTokenService.class);
     
     public void handleStsRequest(HttpServletRequest request, HttpServletResponse response) 
     		throws IOException, ServletException {
@@ -76,8 +78,6 @@ public class AliOssTokenService {
             respMap.put("AccessKeySecret", stsResponse.getCredentials().getAccessKeySecret());
             respMap.put("SecurityToken", stsResponse.getCredentials().getSecurityToken());
             respMap.put("Expiration", stsResponse.getCredentials().getExpiration());
-            maccessKeyId = stsResponse.getCredentials().getAccessKeyId();
-            maccessKeySecret = stsResponse.getCredentials().getAccessKeySecret();
             
 
             String resultString = JSON.toJSONString(respMap);
@@ -168,6 +168,16 @@ public class AliOssTokenService {
             }
         }
         return data.toString();
+    }
+    
+    public String getUrl(String bucketName, String object) {
+    	//过期时间为10年
+    	Date expires = new Date (new Date().getTime() + 3600l * 1000 * 24 * 365 * 10);
+    	return getUrl(bucketName, object, expires);
+    }
+    
+    public String getUrl(String bucketName, String object, Date expires) {
+    	return ossClient.generatePresignedUrl(bucketName, object, expires).toString();
     }
 
 }
