@@ -45,6 +45,13 @@ public class AliOssTokenService {
     
     private Logger logger = LoggerFactory.getLogger(AliOssTokenService.class);
     
+    /**
+     * 处理客户端获取Token的请求
+     * @param request
+     * @param response
+     * @throws IOException
+     * @throws ServletException
+     */
     public void handleStsRequest(HttpServletRequest request, HttpServletResponse response) 
     		throws IOException, ServletException {
     	// 只有 RAM用户（子账号）才能调用 AssumeRole 接口
@@ -97,6 +104,13 @@ public class AliOssTokenService {
         }
     }
     
+    /**
+     * 将结果Token返回客户端
+     * @param request
+     * @param response
+     * @param results
+     * @throws IOException
+     */
     private void response(HttpServletRequest request, HttpServletResponse response, String results) throws IOException {
         String callbackFunName = request.getParameter("callback");
         if (callbackFunName==null || callbackFunName.equalsIgnoreCase("")) {
@@ -111,6 +125,18 @@ public class AliOssTokenService {
         response.flushBuffer();
     }
     
+    /**
+     * 向OSS发送鉴权请求
+     * @param accessKeyId
+     * @param accessKeySecret
+     * @param roleArn
+     * @param roleSessionName
+     * @param policy
+     * @param protocolType
+     * @param durationSeconds
+     * @return
+     * @throws ClientException
+     */
     protected AssumeRoleResponse assumeRole(String accessKeyId, String accessKeySecret, String roleArn,
             String roleSessionName, String policy, ProtocolType protocolType, long durationSeconds) throws ClientException
     {
@@ -139,6 +165,11 @@ public class AliOssTokenService {
         }
     }
     
+    /**
+     * 读取本地Json文件
+     * @param path
+     * @return
+     */
     public static String ReadJson(String path){
         BufferedReader reader = null;
         //返回值,使用StringBuffer
@@ -170,12 +201,24 @@ public class AliOssTokenService {
         return data.toString();
     }
     
+    /**
+     * 获取上传文件的url
+     * @param bucketName
+     * @param object
+     * @return
+     */
     public String getUrl(String bucketName, String object) {
     	//过期时间为10年
     	Date expires = new Date (new Date().getTime() + 3600l * 1000 * 24 * 365 * 10);
     	return getUrl(bucketName, object, expires);
     }
-    
+    /**
+     * 
+     * @param bucketName
+     * @param object
+     * @param expires
+     * @return
+     */
     public String getUrl(String bucketName, String object, Date expires) {
     	return ossClient.generatePresignedUrl(bucketName, object, expires).toString();
     }
