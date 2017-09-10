@@ -76,8 +76,9 @@ public class AliOssTokenService {
             respMap.put("AccessKeySecret", stsResponse.getCredentials().getAccessKeySecret());
             respMap.put("SecurityToken", stsResponse.getCredentials().getSecurityToken());
             respMap.put("Expiration", stsResponse.getCredentials().getExpiration());
-            maccessKeyId = accessKeyId;
-            maccessKeySecret = accessKeySecret;
+            maccessKeyId = stsResponse.getCredentials().getAccessKeyId();
+            maccessKeySecret = stsResponse.getCredentials().getAccessKeySecret();
+            
 
             String resultString = JSON.toJSONString(respMap);
             logger.error("[truyayong] resultString : " + resultString);

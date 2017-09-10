@@ -30,5 +30,7 @@
 	<classpathentry kind="lib" path="lib/aliyun-java-sdk-core-2.1.7.jar"/>
 	<classpathentry kind="lib" path="lib/aliyun-java-sdk-sts-2.1.6.jar"/>
 	<classpathentry kind="lib" path="lib/aliyun-sdk-oss-2.0.6.jar"/>
+	<classpathentry kind="lib" path="lib/httpclient-4.4.jar"/>
+	<classpathentry kind="lib" path="lib/httpcore-4.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

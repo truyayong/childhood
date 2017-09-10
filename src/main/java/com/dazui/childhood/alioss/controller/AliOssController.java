@@ -29,8 +29,9 @@ public class AliOssController {
 	private AliOssTokenService tokenAervice;
 	
 	private OSSClient ossClient;
-	
-	private static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+    private static final String endpoint = "http://oss-cn-shenzhen.aliyuncs.com";
+    public String maccessKeyId = "LTAIgLoRZvwb2rqy";
+    public String maccessKeySecret = "EAyBXptPSkq4FVjtEPXcNtFkHSH1SR";
 
 	@GetMapping("/getStsToken")
 	public void getStsToken(HttpServletRequest request, HttpServletResponse response) {
@@ -46,7 +47,10 @@ public class AliOssController {
 	@PostMapping("/callback")
 	public Object getCallBack(@RequestBody JSONObject json) {
 		logger.info("[truyayong] callback filename : " + json.toString());
+		String bucket = json.getString("bucket");
+		String key = json.getString("object");
 		JSONObject jsonobject = new JSONObject();
+		OSSClient client = new OSSClient(endpoint, maccessKeyId, maccessKeySecret);
 		jsonobject.put("tru", "111");
 		return jsonobject;
 		
