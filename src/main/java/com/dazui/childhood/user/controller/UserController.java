@@ -70,6 +70,7 @@ public class UserController {
 	
 	@GetMapping("/logout")
 	public Object logout(HttpSession session) {
+		logger.info("[truyayong] logout");
 		JSONObject jsonObject =new JSONObject();
 		//remove session
 		if (session != null) {
