@@ -6,6 +6,7 @@ import javax.management.Query;
 import javax.servlet.http.HttpSession;
 
 import org.apache.solr.client.solrj.SolrClient;
+import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrClient;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dazui.childhood.alioss.service.AliOssTokenService;
-import com.dazui.childhood.config.SolrContext;;
 
 @RestController
 @RequestMapping("")
@@ -30,20 +29,19 @@ public class SolrController {
 	private Logger logger = LoggerFactory.getLogger(SolrController.class);
 
 	@Autowired
-	private SolrContext solrContext;
-	@Autowired
 	private SolrClient client;
 	
 	@GetMapping("/testSolr")
 	public String testSolr(HttpSession session) {
 		logger.error("[truyayong] enter testSolr");
-		SolrInputDocument doc = new SolrInputDocument();
-		doc.addField("id", "hhh");
-		doc.addField("title", new String[]{"huhu"});
+		SolrQuery query = new SolrQuery();
+		query.setQuery("*:*");
+		query.addField("*");
 		try {
-			client.add(doc);
+			QueryResponse response = client.query(query);
+			SolrDocumentList docs = response.getResults();
 			client.commit();
-			return "commit";
+			return "commit docs size : " + docs.size();
 		} catch (SolrServerException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
