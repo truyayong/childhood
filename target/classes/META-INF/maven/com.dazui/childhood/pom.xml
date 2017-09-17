@@ -22,7 +22,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<spring.data.solr.version>2.1.1.RELEASE</spring.data.solr.version>
 	</properties>
+	
+	<dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-solr</artifactId>
+                <version>${spring.data.solr.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -36,7 +47,7 @@
 			<scope>test</scope>
 		</dependency>
 		
-				<dependency>
+		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
 			<version>1.3.0</version>
@@ -65,9 +76,10 @@
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <!-- Solr for search module -->
+        
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-solr</artifactId>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-solr</artifactId>
         </dependency>
 	</dependencies>
 
