@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 
 @Configuration
-@EnableSolrRepositories(basePackages={"com.dazui.childhood"})
-public class SolrCotext {
+@EnableSolrRepositories(basePackages= {"com.dazui.chilshood"})
+public class SolrContext {
 
 	static final String SOLR_HOST = "http://localhost:8983/solr/test";
 	

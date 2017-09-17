@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dazui.childhood.alioss.service.AliOssTokenService;
-import com.dazui.childhood.config.SolrCotext;
+import com.dazui.childhood.config.SolrContext;;
 
 @RestController
 @RequestMapping("")
@@ -30,21 +30,22 @@ public class SolrController {
 	private Logger logger = LoggerFactory.getLogger(SolrController.class);
 
 	@Autowired
+	private SolrContext solrContext;
+	@Autowired
 	private SolrClient client;
 	
 	@GetMapping("/testSolr")
 	public String testSolr(HttpSession session) {
 		logger.error("[truyayong] enter testSolr");
 		SolrInputDocument doc = new SolrInputDocument();
-		doc.addField("id", "iii");
-		doc.addField("title", new String[]{"gaga"});
+		doc.addField("id", "hhh");
+		doc.addField("title", new String[]{"huhu"});
 		try {
 			client.add(doc);
 			client.commit();
 			return "commit";
 		} catch (SolrServerException | IOException e) {
 			// TODO Auto-generated catch block
-			logger.error("[truyayong] exception testSolr", e);
 			e.printStackTrace();
 		}
 		return "NIL";
