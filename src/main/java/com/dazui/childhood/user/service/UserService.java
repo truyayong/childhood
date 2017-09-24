@@ -16,23 +16,17 @@ public class UserService {
 	
 	public User add(User user) {
 		userMapper.add(user);
-		return userMapper.findOne(user);
-	}
-	
-	public User findById(int id) {
-		User user =new User();
-		user.setId(id);
-		return userMapper.findOne(user);
+		return userMapper.findUserByName(user);
 	}
 	
 	public User findByName(String name) {
 		User user = new User();
 		user.setName(name);
-		return userMapper.findOne(user);
+		return userMapper.findUserByName(user);
 	}
 	
 	public User updateAvaterUrl(User user, String avaterUrl) {
-		User dbUser = userMapper.findOne(user);
+		User dbUser = userMapper.findUserByName(user);
 		dbUser.setAvaterUrl(avaterUrl);
 		userMapper.updateAvaterUrl(dbUser);
 		return dbUser;

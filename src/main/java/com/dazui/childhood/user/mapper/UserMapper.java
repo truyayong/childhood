@@ -15,7 +15,7 @@ public interface UserMapper {
 	void add(User user);
 	
 	@Select("SELECT * FROM user WHERE name = #{name}")
-	User findOne(User user);
+	User findUserByName(User user);
 	
 	@Update("UPDATE user SET name=#{name} WHERE id =#{id}")
 	void updateName(User user);

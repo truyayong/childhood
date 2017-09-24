@@ -53,6 +53,7 @@ public class AliOssController {
 		String userName = requestBody.getString("username");
 		User dbUser = userService.findByName(userName);
 		String fileUrl = tokenAervice.getUrl(bucket, object);
+		
 		userService.updateAvaterUrl(dbUser, fileUrl);
 		JSONObject responseBody = new JSONObject();
 		responseBody.put("fileUrl", fileUrl);
