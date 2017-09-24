@@ -15,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import com.alibaba.fastjson.JSONObject;
 import com.dazui.childhood.config.WebSecurityConfig;
 import com.dazui.childhood.user.domin.User;
+import com.dazui.childhood.user.mapper.UserMapper;
 import com.dazui.childhood.user.service.UserService;
 
 @RestController
@@ -27,6 +28,8 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private UserMapper userMapper;
 	
 	@PostMapping("/register")
 	public Object register(@RequestBody User user, HttpSession session) {
@@ -49,22 +52,33 @@ public class UserController {
 			jsonObject.put("message", "登录异常");
 			return jsonObject;
 		}
-		User lUser = userService.findByName(user.getName());
+		User dbUser = userService.findByName(user.getName());
 		JSONObject jsonObject = new JSONObject();
-		if (lUser == null) {
+		if (dbUser == null) {
 			jsonObject.put("message", "用户名未注册");
 			return jsonObject;
 		} else {
-			if (!userService.comparePassword(user, lUser)) {
+			if (!userService.comparePassword(user, dbUser)) {
 				jsonObject.put("message", "密码错误");
 				return jsonObject;
 			} else {
-				session.setAttribute(SESSION_KEY, lUser.getName());
-				session.getAttribute(SESSION_KEY);
+				session.setAttribute(WebSecurityConfig.SESSION_USER_ID, dbUser.getId());
+				session.setAttribute(WebSecurityConfig.SESSION_USER_NAME, dbUser.getName());
+				session.setAttribute(WebSecurityConfig.SESSION_USER_OBJ, dbUser);
 				jsonObject.put("message", "登陆成功");
 				return jsonObject;
 			}
 		}
+	
+	}
+	
+	@PostMapping("/update")
+	public Object update(@RequestBody User user, HttpSession session) {
+		System.out.println("truyayong" + user.toString());
+		userService.updateAvaterUrl(user, "www.sogou.com");
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("message", "ok啦");
+		return jsonObject;
 	
 	}
 	
@@ -75,7 +89,9 @@ public class UserController {
 		//remove session
 		if (session != null) {
 			jsonObject.put("message", "logout success");
-			session.removeAttribute(WebSecurityConfig.SESSION_KEY);
+			session.removeAttribute(WebSecurityConfig.SESSION_USER_ID);
+			session.removeAttribute(WebSecurityConfig.SESSION_USER_NAME);
+			session.removeAttribute(WebSecurityConfig.SESSION_USER_OBJ);
 		} else {
 			jsonObject.put("message", "logout fail");
 		}

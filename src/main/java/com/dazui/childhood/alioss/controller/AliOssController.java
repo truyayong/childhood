@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,8 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.dazui.childhood.alioss.service.AliOssTokenService;
 import com.dazui.childhood.user.controller.UserController;
+import com.dazui.childhood.user.domin.User;
+import com.dazui.childhood.user.service.UserService;
 
 @RestController
 @RequestMapping("")
@@ -28,6 +31,8 @@ public class AliOssController {
 	private Logger logger = LoggerFactory.getLogger(AliOssController.class);
 	@Autowired
 	private AliOssTokenService tokenAervice;
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/getStsToken")
 	public void getStsToken(HttpServletRequest request, HttpServletResponse response) {
@@ -39,14 +44,17 @@ public class AliOssController {
 			logger.error("getStsToken exception : ", e);
 		}
 	}
-	//,HttpServletRequest request, HttpServletResponse response
+	
 	@PostMapping("/callback")
-	public Object getCallBack(@RequestBody JSONObject requestBody) {
+	public Object getCallBack(@RequestBody JSONObject requestBody, HttpSession session) {
 		logger.info("[truyayong] callback filename : " + requestBody.toString());
 		String bucket = requestBody.getString("bucket");
 		String object = requestBody.getString("object");
-		JSONObject responseBody = new JSONObject();
+		String userName = requestBody.getString("username");
+		User dbUser = userService.findByName(userName);
 		String fileUrl = tokenAervice.getUrl(bucket, object);
+		userService.updateAvaterUrl(dbUser, fileUrl);
+		JSONObject responseBody = new JSONObject();
 		responseBody.put("fileUrl", fileUrl);
 		return responseBody;
 		

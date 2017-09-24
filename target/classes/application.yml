@@ -13,4 +13,3 @@ spring:
       host:http://localhost:8983/solr  
 mybatis:
     type-aliases-package: com.dazui.childhood.user.domin
-    config-location: classpath:mybatis.xml

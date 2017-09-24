@@ -31,6 +31,13 @@ public class UserService {
 		return userMapper.findOne(user);
 	}
 	
+	public User updateAvaterUrl(User user, String avaterUrl) {
+		User dbUser = userMapper.findOne(user);
+		dbUser.setAvaterUrl(avaterUrl);
+		userMapper.updateAvaterUrl(dbUser);
+		return dbUser;
+	}
+	
 	public boolean comparePassword(@NotNull User remoteUser,@NotNull User locacalUser) {
 		return remoteUser.getPassword().equals(locacalUser.getPassword());
 	}

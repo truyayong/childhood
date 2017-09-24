@@ -17,6 +17,8 @@ public class User implements Serializable {
 	private String password;
 	
 	private String description;
+	
+	private String avaterUrl;
 
 	public Integer getId() {
 		return id;
@@ -49,6 +51,13 @@ public class User implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
+	public String getAvaterUrl() {
+		return avaterUrl;
+	}
+
+	public void setAvaterUrl(String avaterUrl) {
+		this.avaterUrl = avaterUrl;
+	}
 	
 }

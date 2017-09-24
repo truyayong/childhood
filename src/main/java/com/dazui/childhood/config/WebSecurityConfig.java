@@ -18,7 +18,9 @@ import com.dazui.childhood.solr.controller.SolrController;
 @Configuration
 public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 	
-	public final static String SESSION_KEY = "user";
+	public final static String SESSION_USER_ID = "user_id";
+	public final static String SESSION_USER_NAME = "user_name";
+	public final static String SESSION_USER_OBJ = "user_obj";
 	
 	private Logger logger = LoggerFactory.getLogger(WebSecurityConfig.class);
 
@@ -33,7 +35,7 @@ public class WebSecurityConfig extends WebMvcConfigurerAdapter {
 //		interceptorRegistration.excludePathPatterns("/callback**");
 //		interceptorRegistration.excludePathPatterns("/testSolr**");
 		//拦截配置
-		interceptorRegistration.addPathPatterns("/login**");
+		interceptorRegistration.addPathPatterns("/loginiiiii**");
 	}
 	
 	@Bean
